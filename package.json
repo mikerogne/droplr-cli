@@ -1,0 +1,16 @@
+{
+  "name": "droplr-experiment",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "dependencies": {
+    "dotenv": "^6.1.0",
+    "droplr-api": "git+https://github.com/Droplr/droplr-js.git#7cc54bf1c8a567e487cd3395c2f5d55ea0add971"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Mike Rogne <mikerogne@users.noreply.github.com> (https://github.com/mikerogne)",
+  "license": "ISC"
+}

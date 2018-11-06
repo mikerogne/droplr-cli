@@ -12,25 +12,37 @@ program.version('1.0.0');
 program.command('get <link|id>')
        .description('get a drop by link or id')
        .action(id => {
-           console.log(id);
+           id = getIdFromLink(id);
+
+           droplr.drops.get(id).then(result => {
+               console.table(result);
+           });
        });
 
 program.command('expire <link|id> <when>')
        .description('set expiration for a drop. can specify "m" for minutes, "h" for hours, or "d" for days. ie: 20m, 1hr, 30d)')
        .action((id, when) => {
            let num, durationType;
+           let dt;
+
+           id = getIdFromLink(id);
 
            try {
                [, num, durationType] = when.match(/^(\d+?)([m|h|d])$/i);
+               dt = moment().add(num, durationType);
            } catch (error) {
                console.error("Unable to parse <when> value.");
                program.help();
            }
 
-           console.log([num, durationType]);
-           const dt = moment().add(num, durationType);
-
-           console.log(`Expiring ${dt.calendar()}`);
+           droplr.drops.update(id, {
+               selfDestructType: 'TIME',
+               selfDestructValue: dt.valueOf(),
+           }).then(result => {
+               console.log(`${id} is set to expire ${dt.calendar().toLowerCase()}`);
+           }).catch(err => {
+               console.error(err);
+           });
        });
 
 program.command('delete [link|id]')
@@ -41,6 +53,23 @@ program.parse(process.argv);
 
 if (!process.argv.slice(2).length) {
     program.outputHelp();
+}
+
+/**
+ * Expects link like: https://d.pr/i/FOOBAR
+ * @param {string} link
+ * @return {string}
+ */
+function getIdFromLink(link) {
+    let url;
+
+    try {
+        url = new URL(link);
+    } catch (error) {
+        return link;
+    }
+
+    return url.pathname.split('/').slice(-1).toString();
 }
 
 // droplr.drops.update('DBoVPI', {

@@ -1,18 +1,56 @@
 require('dotenv').config();
 const DroplrApi = require('droplr-api');
+const program = require('commander');
+const moment = require('moment');
 
 const droplr = new DroplrApi.Client({
-    auth: new Droplr.BasicAuth(process.env.USERNAME, process.env.PASSWORD)
+    auth: new DroplrApi.BasicAuth(process.env.DROPLR_USERNAME, process.env.DROPLR_PASSWORD)
 });
 
-droplr.drops.update('DBoVPI', {
-    selfDestructType: 'TIME',
-    selfDestructValue: Math.round((new Date().getTime() + 60 * 60 * 3 * 1000)) // 5 hours from now
-}).then(result => {
-    console.log(result);
-}).catch(err => {
-    console.log(err);
-});
+program.version('1.0.0');
+
+program.command('get <link|id>')
+       .description('get a drop by link or id')
+       .action(id => {
+           console.log(id);
+       });
+
+program.command('expire <link|id> <when>')
+       .description('set expiration for a drop. can specify "m" for minutes, "h" for hours, or "d" for days. ie: 20m, 1hr, 30d)')
+       .action((id, when) => {
+           let num, durationType;
+
+           try {
+               [, num, durationType] = when.match(/^(\d+?)([m|h|d])$/i);
+           } catch (error) {
+               console.error("Unable to parse <when> value.");
+               program.help();
+           }
+
+           console.log([num, durationType]);
+           const dt = moment().add(num, durationType);
+
+           console.log(`Expiring ${dt.calendar()}`);
+       });
+
+program.command('delete [link|id]')
+       .description('delete a drop')
+       .action(id => {});
+
+program.parse(process.argv);
+
+if (!process.argv.slice(2).length) {
+    program.outputHelp();
+}
+
+// droplr.drops.update('DBoVPI', {
+//     selfDestructType: 'TIME',
+//     selfDestructValue: Math.round((new Date().getTime() + 60 * 60 * 3 * 1000)) // 5 hours from now
+// }).then(result => {
+//     console.log(result);
+// }).catch(err => {
+//     console.error(err);
+// });
 
 // client.drops.get('DBoVPI').then(result => {
 //     console.log(result);

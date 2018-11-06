@@ -14,5 +14,5 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Mike Rogne <mikerogne@users.noreply.github.com> (https://github.com/mikerogne)",
-  "license": "ISC"
+  "license": "MIT"
 }

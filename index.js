@@ -10,7 +10,7 @@ const droplr = new DroplrApi.Client({
     auth: new DroplrApi.BasicAuth(auth.username, auth.password)
 });
 
-program.version('1.0.4');
+program.version('1.0.5');
 
 program.command('set-auth <username> <password>')
        .description('set your droplr authentication')
@@ -52,7 +52,7 @@ program.command('expire <link|id> <when>')
            id = getIdFromLink(id);
 
            try {
-               [, num, durationType] = when.match(/^(\d+?)([m|h|d])$/i);
+               [, num, durationType] = when.match(/^(\d+?)([s|m|h|d|y])$/i);
                dt = moment().add(num, durationType);
            } catch (err) {
                return console.error(`Unable to parse <when> value: ${chalk.white(when)}.`);

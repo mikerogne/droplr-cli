@@ -1,3 +1,4 @@
+#!/usr/bin/env node
 require('dotenv').config();
 const DroplrApi = require('droplr-api');
 const program = require('commander');

@@ -1,7 +1,16 @@
 {
   "name": "droplr-cli",
-  "version": "1.0.1",
-  "description": "",
+  "version": "1.0.2",
+  "description": "Simple command-line droplr utility",
+  "keywords": [
+    "droplr",
+    "droplr cli"
+  ],
+  "homepage": "https://github.com/mikerogne/droplr-cli",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mikerogne/droplr-cli"
+  },
   "main": "index.js",
   "dependencies": {
     "chalk": "^2.4.1",

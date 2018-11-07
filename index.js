@@ -30,7 +30,7 @@ program.command('expire <link|id> <when>')
            try {
                [, num, durationType] = when.match(/^(\d+?)([m|h|d])$/i);
                dt = moment().add(num, durationType);
-           } catch (error) {
+           } catch (err) {
                console.error("Unable to parse <when> value.");
                program.help();
            }
@@ -39,7 +39,7 @@ program.command('expire <link|id> <when>')
                selfDestructType: 'TIME',
                selfDestructValue: dt.valueOf(),
            }).then(result => {
-               console.log(`${id} is set to expire ${dt.calendar().toLowerCase()}`);
+               console.log(`[${id}] is set to expire ${dt.calendar().toLowerCase()}`);
            }).catch(err => {
                console.error(err);
            });
@@ -47,7 +47,17 @@ program.command('expire <link|id> <when>')
 
 program.command('delete [link|id]')
        .description('delete a drop')
-       .action(id => {});
+       .action(id => {
+           try {
+               id = getIdFromLink(id);
+
+               droplr.drops.delete(id);
+           } catch (err) {
+               return console.log(`Encountered error when deleting drop: ${err.message}`);
+           }
+
+           console.log(`[${id}] has been deleted.`);
+       });
 
 program.parse(process.argv);
 
@@ -71,23 +81,3 @@ function getIdFromLink(link) {
 
     return url.pathname.split('/').slice(-1).toString();
 }
-
-// droplr.drops.update('DBoVPI', {
-//     selfDestructType: 'TIME',
-//     selfDestructValue: Math.round((new Date().getTime() + 60 * 60 * 3 * 1000)) // 5 hours from now
-// }).then(result => {
-//     console.log(result);
-// }).catch(err => {
-//     console.error(err);
-// });
-
-// client.drops.get('DBoVPI').then(result => {
-//     console.log(result);
-// });
-
-// client.drops.list().then(result => {
-//     const drops = result.results;
-//     console.log(`Total drops: ${result.count}`);
-//     console.log(`First drop in list: ${JSON.stringify(drops[0], null, 2)}`);
-// });
-

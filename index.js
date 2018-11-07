@@ -2,6 +2,7 @@ require('dotenv').config();
 const DroplrApi = require('droplr-api');
 const program = require('commander');
 const moment = require('moment');
+const chalk = require('chalk');
 
 const droplr = new DroplrApi.Client({
     auth: new DroplrApi.BasicAuth(process.env.DROPLR_USERNAME, process.env.DROPLR_PASSWORD)
@@ -31,17 +32,16 @@ program.command('expire <link|id> <when>')
                [, num, durationType] = when.match(/^(\d+?)([m|h|d])$/i);
                dt = moment().add(num, durationType);
            } catch (err) {
-               console.error("Unable to parse <when> value.");
-               program.help();
+               return console.error(chalk.red.bold(`Unable to parse <when> value: ${chalk.white(when)}.`));
            }
 
            droplr.drops.update(id, {
                selfDestructType: 'TIME',
                selfDestructValue: dt.valueOf(),
            }).then(result => {
-               console.log(`[${id}] is set to expire ${dt.calendar().toLowerCase()}`);
+               console.log(`Drop [${chalk.cyanBright(id)}] is set to expire ${chalk.cyanBright(dt.calendar().toLowerCase())}.`);
            }).catch(err => {
-               console.error(err);
+               console.error(chalk.red.bold(`Encountered error updating: ${chalk.white(err)}`));
            });
        });
 
@@ -53,10 +53,10 @@ program.command('delete [link|id]')
 
                droplr.drops.delete(id);
            } catch (err) {
-               return console.log(`Encountered error when deleting drop: ${err.message}`);
+               return console.log(chalk.red.bold(`Encountered error when deleting drop: ${chalk.white(err.message)}`));
            }
 
-           console.log(`[${id}] has been deleted.`);
+           console.log(`Drop [${chalk.cyanBright(id)}] has been deleted.`);
        });
 
 program.parse(process.argv);

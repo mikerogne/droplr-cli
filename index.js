@@ -43,7 +43,7 @@ program.command('expire <link|id> <when>')
                [, num, durationType] = when.match(/^(\d+?)([m|h|d])$/i);
                dt = moment().add(num, durationType);
            } catch (err) {
-               return console.error(chalk.red.bold(`Unable to parse <when> value: ${chalk.white(when)}.`));
+               return console.error(`Unable to parse <when> value: ${chalk.white(when)}.`);
            }
 
            droplr.drops.update(id, {
@@ -52,7 +52,7 @@ program.command('expire <link|id> <when>')
            }).then(result => {
                console.log(`Drop [${chalk.cyanBright(id)}] is set to expire ${chalk.cyanBright(dt.calendar().toLowerCase())}.`);
            }).catch(err => {
-               console.error(chalk.red.bold(`Encountered error updating: ${chalk.white(err)}`));
+               console.error(`Encountered error updating: ${chalk.white(err)}`);
            });
        });
 
@@ -64,11 +64,15 @@ program.command('delete [link|id]')
 
                droplr.drops.delete(id);
            } catch (err) {
-               return console.log(chalk.red.bold(`Encountered error when deleting drop: ${chalk.white(err.message)}`));
+               return console.log(`Encountered error when deleting drop: ${chalk.white(err.message)}`);
            }
 
            console.log(`Drop [${chalk.cyanBright(id)}] has been deleted.`);
        });
+
+program.on('command:*', () => {
+    console.error(`Invalid command: ${chalk.white(program.args.join(' '))}\nSee --help for a list of available commands.`);
+});
 
 program.parse(process.argv);
 

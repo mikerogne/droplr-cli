@@ -1,15 +1,24 @@
 #!/usr/bin/env node
-require('dotenv').config();
 const DroplrApi = require('droplr-api');
 const program = require('commander');
 const moment = require('moment');
 const chalk = require('chalk');
+const Auth = require('./Auth');
+const auth = new Auth();
 
 const droplr = new DroplrApi.Client({
-    auth: new DroplrApi.BasicAuth(process.env.DROPLR_USERNAME, process.env.DROPLR_PASSWORD)
+    auth: new DroplrApi.BasicAuth(auth.username, auth.password)
 });
 
-program.version('1.0.0');
+program.version('1.0.4');
+
+program.command('set-auth <username> <password>')
+       .description('set your droplr authentication')
+       .action((username, password) => {
+           auth.setAuth(username, password);
+
+           console.log(`Updated credentials.`);
+       });
 
 program.command('get <link|id>')
        .description('get a drop by link or id')

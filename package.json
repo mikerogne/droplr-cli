@@ -1,6 +1,6 @@
 {
   "name": "droplr-cli",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Simple command-line droplr utility",
   "keywords": [
     "droplr",
@@ -15,9 +15,9 @@
   "dependencies": {
     "chalk": "^2.4.1",
     "commander": "^2.19.0",
-    "dotenv": "^6.1.0",
     "droplr-api": "git+https://github.com/Droplr/droplr-js.git#7cc54bf1c8a567e487cd3395c2f5d55ea0add971",
-    "moment": "^2.22.2"
+    "moment": "^2.22.2",
+    "xdg-basedir": "^3.0.0"
   },
   "devDependencies": {},
   "bin": {

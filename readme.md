@@ -15,12 +15,11 @@ With droplr-cli, I can simply do something like: `droplr expire https://d.pr/i/i
 ### Prerequisites
 
 - Node.js (I like using `nvm` personally. See more: [Node Version Manager](https://github.com/creationix/nvm))
-- **At the time of writing, this has only been tested on macOS!**
 
 ### Steps
 
 - `npm install -g droplr-cli`
-- `droplr set-auth <username> <password>` (This will create ~/.config/.droplrrc)
+- `droplr set-auth <username> <password>` (This will create a `droplr-cli.json` file in your config directory. Typically `~/.config` on macOS/UNIX.)
 
 ## Running the tests
 
@@ -33,3 +32,4 @@ This project is licensed under the [MIT License](https://github.com/mikerogne/dr
 ## Acknowledgments
 
 - https://github.com/Droplr/droplr-js
+- Thanks to [FatBoyXPC](https://github.com/FatBoyXPC/) for the XDG Base Directory assistance!

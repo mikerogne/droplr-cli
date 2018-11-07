@@ -27,7 +27,10 @@ program.command('get <link|id>')
                    'Deleted': result.deleted,
                    'Expires': result.selfDestructType === 'TIME' ? new Date(result.selfDestructValue).toLocaleString() : 'N/A',
                };
+
                console.table(data);
+           }).catch(err => {
+               console.error(`Encountered error getting drop: ${chalk.white(err.message)}`);
            });
        });
 
@@ -52,22 +55,20 @@ program.command('expire <link|id> <when>')
            }).then(result => {
                console.log(`Drop [${chalk.cyanBright(id)}] is set to expire ${chalk.cyanBright(dt.calendar().toLowerCase())}.`);
            }).catch(err => {
-               console.error(`Encountered error updating: ${chalk.white(err)}`);
+               console.error(`Encountered error updating drop: ${chalk.white(err)}`);
            });
        });
 
 program.command('delete [link|id]')
        .description('delete a drop')
        .action(id => {
-           try {
-               id = getIdFromLink(id);
+           id = getIdFromLink(id);
 
-               droplr.drops.delete(id);
-           } catch (err) {
-               return console.log(`Encountered error when deleting drop: ${chalk.white(err.message)}`);
-           }
-
-           console.log(`Drop [${chalk.cyanBright(id)}] has been deleted.`);
+           droplr.drops.delete(id).then(() => {
+               console.log(`Drop [${chalk.cyanBright(id)}] has been deleted.`);
+           }).catch(err => {
+               console.log(`Encountered error deleting drop: ${chalk.white(err.message)}`);
+           });
        });
 
 program.on('command:*', () => {

@@ -1,5 +1,5 @@
 {
-  "name": "droplr",
+  "name": "droplr-cli",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -11,9 +11,12 @@
     "moment": "^2.22.2"
   },
   "devDependencies": {},
+  "bin": {
+      "droplr": "./index.js"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "Mike Rogne <mikerogne@users.noreply.github.com> (https://github.com/mikerogne)",
+  "author": "Mike Rogne <mike@infinitywebcreations.com> (https://github.com/mikerogne)",
   "license": "MIT"
 }

@@ -16,7 +16,17 @@ program.command('get <link|id>')
            id = getIdFromLink(id);
 
            droplr.drops.get(id).then(result => {
-               console.table(result);
+               const data = {
+                   'Title': result.title,
+                   'Link': result.shortlink,
+                   'Type': result.type,
+                   'Active': result.active,
+                   'Boards': result.boards,
+                   'Date Created': new Date(result.createdAt).toLocaleString(),
+                   'Deleted': result.deleted,
+                   'Expires': result.selfDestructType === 'TIME' ? new Date(result.selfDestructValue).toLocaleString() : 'N/A',
+               };
+               console.table(data);
            });
        });
 
